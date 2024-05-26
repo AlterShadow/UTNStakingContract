@@ -1,0 +1,15 @@
+{
+    "projects": [
+      {
+        "name": "LiquidStaking",
+        "path": "./contracts/staking.tact",
+        "output": "./build/Staking",
+        "options": {
+          "debug": true,
+          "experimental": {
+            "inline": true
+          }
+        }
+      }
+    ]
+  }

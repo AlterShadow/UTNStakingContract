@@ -21,7 +21,6 @@ export async function run(provider: NetworkProvider) {
     //         toNano('0.12'),
     //     ),
     // );
-
     // await staking.send(
     //     provider.sender(),
     //     {
@@ -32,9 +31,7 @@ export async function run(provider: NetworkProvider) {
     //         queryId: 0n,
     //     },
     // );
-
     // await provider.waitForDeploy(staking.address);
-
     // const jettonContract = provider.open(
     //     await SampleJetton.fromInit(
     //         provider.sender().address ?? Address.parse('EQCTg62YqJ05aKsY1EFukODXpBXheoMx0kONqJe6NvkYjIUP'),
@@ -42,7 +39,6 @@ export async function run(provider: NetworkProvider) {
     //         toNano(100000),
     //     ),
     // );
-
     // await jettonContract.send(
     //     provider.sender(),
     //     {
@@ -53,46 +49,41 @@ export async function run(provider: NetworkProvider) {
     //         queryId: 0n,
     //     },
     // );
-
     // await provider.waitForDeploy(jettonContract.address);
-
     // const staking = provider.open(
     //     Staking.fromAddress(Address.parse('EQCbtXqDntXry2pB66Ue37AaOPKibp2osHhLJXJmCCfeh8dL')),
     // );
     // const jettonContract = provider.open(
     //     JettonMaster.create(Address.parse('EQAPKqRFnQc-2m5Ogg0UUMNM0cZRdK4JUR2gN6wk8PX90_Wf')),
     // );
-
-    // const staking = provider.open(
-    //     Staking.fromAddress(Address.parse('EQCbtXqDntXry2pB66Ue37AaOPKibp2osHhLJXJmCCfeh8dL')),
-    // );
+    const staking = provider.open(
+        Staking.fromAddress(Address.parse('EQAMIjlCBAxesC_zhOkmVEfNoDnCR_3J-7CR5RZN161MWoaE')),
+    );
     const jettonContract = provider.open(
         SampleJetton.fromAddress(Address.parse('EQDdDA_t-njb4JKufyFyTv_E0_CNIN9FitTFmuYFU9513B-L')),
     );
-
     await jettonContract.send(
         provider.sender(),
-        { value: toNano('10') },
+        { value: toNano('4') },
         {
             $$type: 'Mint',
             amount: toNano(1000),
-            receiver: Address.parse('0QDGUkdgSugwTrxWLlOiliDAmWEFVGiB0aGmqsleb1T9w3r4'),
+            receiver: Address.parse('0QDM7pWHkPeO3kOvBIt4_5WYNNMH4zTtT26smT7inLJRizZ2'),
         },
     );
-
     // console.log(await jettonContract.getGetWalletAddress(staking.address));
-
+    // const jettonWalletAddress = await jettonContract.getWalletAddress(staking.address);
+    // console.log(jettonWalletAddress);
     // await staking.send(
     //     provider.sender(),
     //     {
-    //         value: toNano('0.05'),
+    //         value: toNano('0.5'),
     //     },
     //     {
     //         $$type: 'SetJettonWallet',
     //         query_id: 0n,
-    //         wallet: await jettonContract.getWalletAddress(staking.address),
+    //         wallet: jettonWalletAddress,
     //     },
     // );
-
     // console.log('ID', await staking.getId());
 }

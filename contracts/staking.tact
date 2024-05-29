@@ -1,6 +1,6 @@
 import "@stdlib/deploy";
 import "./messages.tact";
-import "./jetton.tact";
+// import "./jetton.tact";
 struct RewardInfo {
     current_reward: Int = 0;
     claimed_reward_amount: Int = 0;
@@ -15,17 +15,17 @@ contract Staking with Deployable {
     const MinTonForStorage: Int = ton("0.01"); // enough for 1 KB of storage for 2.5 years
 
     this_contract_jettonWallet: Address?;
-    prev_owner: Address;
     owner: Address;
     reward_rate: Int;
     total_tons_staked: Int;
     staked_balances: map<Address, StakedBalanceInfo>;
     rewards: map<Address, RewardInfo>;
+    deployed_at: Int as uint32;
     init(_owner: Address, _reward_rate: Int){
-        self.prev_owner = _owner;
         self.owner = _owner;
         self.reward_rate = _reward_rate;
         self.total_tons_staked = 0;
+        self.deployed_at = now();
     }
 
     fun earned(_account: Address): Int {
@@ -37,7 +37,7 @@ contract Staking with Deployable {
         if (self.rewards.get(_account) != null) {
             reward_info = self.rewards.get(_account)!!;
         }
-        let rate: Int = (now() - reward_info.updated_at) * self.reward_rate / 3600 * 24 * 365;
+        let rate: Int = (now() - reward_info.updated_at) * self.reward_rate / 3600 / 24 / 365;
         let earned_ton: Int = balance_info.current_staked * rate;
         return (earned_ton / pow(10, 9) + reward_info.current_reward);
     }
@@ -70,6 +70,10 @@ contract Staking with Deployable {
         self.staked_balances.set(ctx.sender, balance_info);
         //update total stake balance
         self.total_tons_staked = (self.total_tons_staked - msg.amount);
+        let real_unstaking_amount: Int = msg.amount;
+        if ((now() - self.deployed_at) < 3600 * 24 * 30) {
+            real_unstaking_amount = real_unstaking_amount * 70 / 100;
+        }
         send(SendParameters{
                 to: self.this_contract_jettonWallet!!,
                 value: 0,
@@ -77,7 +81,7 @@ contract Staking with Deployable {
                 bounce: false,
                 body: TokenTransfer{
                     query_id: 0,
-                    amount: msg.amount,
+                    amount: real_unstaking_amount,
                     destination: ctx.sender,
                     response_destination: myAddress(),
                     custom_payload: null,

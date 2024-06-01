@@ -1,26 +1,10 @@
 # LiquidStaking
 
-## Project structure
+## how to transfer ownership and withdraw tokens staked on contract
 
--   `contracts` - source code of all the smart contracts of the project and their dependencies.
--   `wrappers` - wrapper classes (implementing `Contract` from ton-core) for the contracts, including any [de]serialization primitives and compilation functions.
--   `tests` - tests for the contracts.
--   `scripts` - scripts used by the project, mainly the deployment scripts.
+there are scripts for those purposes like transfterOwnership.ts and withdrawTon.ts
 
-## How to use
+you can just open command prompt in this project root directory and run `npm start`. then you can see a list of script files in scripts folder.
+you choose one of these as you want and choose mainnet. Then you will be faced with wallet selection options. you should choose mnemonic(the last option) and make sure you have mnemonic in .env file. Please reference the current env.
 
-### Build
-
-`npx blueprint build` or `yarn blueprint build`
-
-### Test
-
-`npx blueprint test` or `yarn blueprint test`
-
-### Deploy or run another script
-
-`npx blueprint run` or `yarn blueprint run`
-
-### Add a new contract
-
-`npx blueprint create ContractName` or `yarn blueprint create ContractName`
+Then the script you chose will be run on mainnet and you can either transfer ownership or withdraw tokens.
